@@ -1,0 +1,17 @@
+{
+	"name": "tommcfarlin/tm-callback-info",
+	"description": "Render contextual information about every function registered with all WordPress hooks.",
+	"type": "wordpress-plugin",
+	"require": {
+		"php": ">=7.2.0"
+	},
+	"require-dev": {
+		"wpreadme2markdown/wp2md": "*"
+	},
+	"authors": [
+		{
+			"name": "Tom McFarlin",
+			"email": "tom@tommcfarlin.com"
+		}
+	]
+}
