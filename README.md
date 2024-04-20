@@ -25,7 +25,7 @@ Specifically, Callback Info looks at each hook  used in the current WordPress in
 
 Callback Info was originally developed as a plugin to demonstrate certain concepts outlined in a series of blog posts. As the plugin became more advanced, I found it's functionality useful in my day-to-day work so decided to release it for others to use, too.
 
-This should onyl be used in development environments.
+This should only be used in development environments.
 
 Pull Requests, Feedback, Questions, Bug Reports, and Feature Requests are welcome to be posted on the [GitHub Issues](https://github.com/tommcfarlin/tm-callback-info/issues) page.
 
