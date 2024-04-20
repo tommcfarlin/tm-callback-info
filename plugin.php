@@ -16,7 +16,6 @@
  * @since   1.0.0
  * @link    https://github.com/tommcfarlin/tm-callback-info
  * @license GPL-3.0-or-later
- * @see     TODO
  */
 
 namespace TmCallbackInfo;
@@ -28,12 +27,12 @@ use ReflectionException;
 
 defined( 'WPINC' ) || die;
 
-// Pass show-callback-info=true to the query string to render callback information.
+// Pass `show-callback-info=true` to the query string to render callback information.
 if ( 'true' !== filter_input( INPUT_GET, 'show-callback-info', FILTER_SANITIZE_STRING ) ) {
 	return;
 }
 
-// Pass use-sample-closure=true to the query string to render a sample closure.
+// Pass `use-sample-anonymous-function=true` to the query string to render a sample closure.
 if ( 'true' === filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_SANITIZE_STRING ) ) {
 	add_action(
 		'wp_enqueue_scripts',
