@@ -1,30 +1,21 @@
 # Callback Info
 
-Stable tag: 1.3.1
-Requires at least: 3.1
-Tested up to: 5.7
-Requires PHP: 5.6
-License: GPLv2 or later
-Tags: rewrite rules, tools
-Contributors: danielbachhuber, automattic, tmoorewp, GaryJ
-
-
-
 **Stable tag:** 1.0.0 \
 **Requires at least:** 6.5 \
 **Tested up to:** 6.5.2 \
 **Requires PHP:** 7.4 \
 **License:** [GPLv3 or later](LICENSE) \
 **Contributors:** [tommcfarlin](https://wordpress.org/plugins/tm-callback-info) \
-**Tags:** developer, debug, tools \
+**Tags:** `developer`, `debug`, `tools `
 
 
-
-This plugin renders contextual information about every function registered with all WordPress hooks.
+Renders contextual information about every function registered with all WordPress hooks.
 
 ## Description
 
-This plugin renders contextual information about every function registered with all WordPress hooks. Specifically, this plugin will render:
+This plugin renders contextual information about every function registered with all WordPress hooks.
+
+Specifically, Callback Info looks at each hook  used in the current WordPress instance including the active themes _and_ plugins and renders:
 
 - the name of the hook,
 - the type of method (object, static, standard function, or anonymous),
@@ -33,9 +24,10 @@ This plugin renders contextual information about every function registered with 
 - the line on which the function ends.
 
 Callback Info was originally developed as a plugin to demonstrate certain concepts outlined in a series of blog posts. As the plugin became more advanced, I found it's functionality useful in my day-to-day work so decided to release it for others to use, too.
-Originally developed for clients hosted at [WordPress VIP](https://wpvip.com/), we thought it would be useful for development environments, etc. too.
 
-Pull Requests, Feedback, Questions, Bug Reports, and Feature Requests are welcome to be posted on the GitHub Issues page.
+This should onyl be used in development environments.
+
+Pull Requests, Feedback, Questions, Bug Reports, and Feature Requests are welcome to be posted on the [GitHub Issues](https://github.com/tommcfarlin/tm-callback-info/issues) page.
 
 ## Installation
 
@@ -56,14 +48,32 @@ Pull Requests, Feedback, Questions, Bug Reports, and Feature Requests are welcom
 1. Click "Activate" to activate the plugin on your site.
 1. Once installed, add `?show-callback-info=true` to your query string to render contextual information.
 
+## Usage Instructions
+
+### Running the Plugin
+
+Once the plugin is activated, navigate to a page on the front-end of your site (that is, do not try to run this plugin within the administration area of your WordPress installation).
+
+Assuming that your domain is `https://plugin.test`, append the query string `?show-callback-info=true` to your URL such that the address is `https://plugin.test?show-callback-info=true`.
+
+This will render all of the hooks along with each function that fires during that hook. Further, you'll see which file in which the function belongs as well as the starting line number and ending line number for the callback.
+
+### Include an Example Anonymous Function
+
+Since not all plugins nor themes use anonymous functions, it's not possible to see how this plugin will detect anonymous functions and provide feedback.
+
+To see how this works, you can also append a second query string to your URL: `?use-sample-anonymous-function=true`. The full URL should look like this: `https://plugin.test?show-callback-info=true&use-sample-anonymous-function=true`
+
+This will render a sample element at the bottom of the page (which you can view in the screenshot below) and you can see the anonymous function and its relevant information under the `wp_enqueue_scripts` hook.
+
+**Note:** This plugin is not designed to run in a production environment.
+
 ## Screenshots
 
-### 1. See which rewrite rules match a given URL, and the priorities they match in.
+### 1. All functions attached to each hook and contextual information for each function.
 
-[missing image]
-
-   ![The main screen showing the rewrite rules](.wordpress-org/screenshot-1.png)
+   ![The wp_enqueue_script hook with related actions](.wordpress-org/screenshot-1.png)
 
 ## Changelog
 
-See the [changelog](https://github.com/tommcfarlin/tm-callback-info/blob/master/CHANGELOG.md).
+See the [CHANGELOG](https://github.com/tommcfarlin/tm-callback-info/blob/master/CHANGELOG.md).
