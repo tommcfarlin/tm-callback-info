@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Callback Info
  * Plugin URI: https://github.com/tommcfarlin/tm-callback-info
- * Description: This plugin lists all functions registered with the WordPress hooks.
+ * Description: Render contextual information about every function registered with all WordPress hooks.
  * Requires at least: 6.5
  * Requires PHP: 7.4.33
  * Author: Tom McFarlin
@@ -24,6 +24,7 @@ namespace TmCallbackInfo;
 use Closure;
 use ReflectionFunction;
 use ReflectionMethod;
+use ReflectionException;
 
 defined( 'WPINC' ) || die;
 
@@ -33,7 +34,7 @@ if ( 'true' !== filter_input( INPUT_GET, 'show-callback-info', FILTER_SANITIZE_S
 }
 
 // Pass use-sample-closure=true to the query string to render a sample closure.
-if ( 'true' === filter_input( INPUT_GET, 'use-sample-closure', FILTER_SANITIZE_STRING ) ) {
+if ( 'true' === filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_SANITIZE_STRING ) ) {
 	add_action(
 		'wp_enqueue_scripts',
 		function () {
@@ -87,10 +88,14 @@ function list_registered_functions() {
  * @return string $output The filename of the function, the start line, and the end line.
  */
 function get_object_method_information( $callback ) {
-	$reflection = new ReflectionMethod(
-		$callback['function'][0],
-		$callback['function'][1]
-	);
+	try {
+		$reflection = new ReflectionMethod(
+			$callback['function'][0],
+			$callback['function'][1]
+		);
+	} catch ( ReflectionException $e ) {
+		return "\n\t" . $e->getMessage() . "\n";
+	}
 
 	$output = <<<METHOD_INFO
 		\n\tObject Method\n
@@ -113,10 +118,14 @@ function get_object_method_information( $callback ) {
  * @return string $output The filename of the function, the start line, and the end line.
  */
 function get_static_method_information( $callback ) {
-	$reflection = new ReflectionMethod(
-		$callback['function'][0],
-		$callback['function'][1]
-	);
+	try {
+		$reflection = new ReflectionMethod(
+			$callback['function'][0],
+			$callback['function'][1]
+		);
+	} catch ( ReflectionException $e ) {
+		return "\n\t" . $e->getMessage() . "\n";
+	}
 
 	$output = <<<METHOD_INFO
 		\n\tStatic Method\n
@@ -141,7 +150,7 @@ function get_anonymous_function_information( $callback ) {
 	$reflection = new ReflectionFunction( $callback['function'] );
 
 	$output = <<<FUNCTION_INFO
-		\tAnonymous Function\n
+		\n\tAnonymous Function\n
 		\tFilename: {$reflection->getFileName()}
 		\tStart line: {$reflection->getStartLine()}
 		\tEnd line: {$reflection->getEndLine()}
@@ -158,7 +167,11 @@ function get_anonymous_function_information( $callback ) {
  * @return string $output The filename of the function, the start line, and the end line.
  */
 function get_function_information( $callback ) {
-	$reflection = new ReflectionFunction( $callback['function'] );
+	try {
+		$reflection = new ReflectionFunction( $callback['function'] );
+	} catch ( ReflectionException $e ) {
+		return "\n\t" . $e->getMessage() . "\n";
+	}
 
 	$output = <<<FUNCTION_INFO
 		\n\tFunction\n
