@@ -37,6 +37,7 @@ Pull Requests, Feedback, Questions, Bug Reports, and Feature Requests are welcom
 1. Search for "callback-info" using the search bar on the right side.
 1. Click "Install Now" to install the plugin.
 1. After it's installed, click "Activate" to activate the plugin on your site.
+1. Navigate to any page on the front-end - any non-admin page - of your site.
 1. Once installed, add `?show-callback-info=true` to your query string to render contextual information.
 
 ### Install the Plugin Manually
@@ -46,6 +47,7 @@ Pull Requests, Feedback, Questions, Bug Reports, and Feature Requests are welcom
 1. Upload the entire `tm-callback-info` folder to your `/wp-content/plugins` directory.
 1. Visit the Plugins page from your WordPress dashboard and look for the newly installed plugin.
 1. Click "Activate" to activate the plugin on your site.
+1. Navigate to any page on the front-end - any non-admin page - of your site.
 1. Once installed, add `?show-callback-info=true` to your query string to render contextual information.
 
 ## Usage Instructions
@@ -72,7 +74,7 @@ This will render a sample element at the bottom of the page (which you can view 
 
 ### 1. All functions attached to each hook and contextual information for each function.
 
-   ![The wp_enqueue_script hook with related actions](.wordpress-org/screenshot-1.png)
+   ![The wp_enqueue_script hook with related actions](/assets/screenshots/screenshot-1.png)
 
 ## Changelog
 
