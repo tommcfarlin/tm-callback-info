@@ -27,21 +27,27 @@ use ReflectionException;
 
 defined( 'WPINC' ) || die;
 
+/*
 // Pass `show-callback-info=true` to the query string to render callback information.
 if ( 'true' !== filter_input( INPUT_GET, 'show-callback-info', FILTER_SANITIZE_STRING ) ) {
 	return;
 }
+*/
 
 // Pass `use-sample-anonymous-function=true` to the query string to render a sample closure.
-if ( 'true' === filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_SANITIZE_STRING ) ) {
+$should_render_example_closure = '';
+$user_input                    = filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_UNSAFE_RAW );
+if ( isset( $user_input ) ) {
+	$should_render_example_closure = strtolower( htmlspecialchars( $user_input ) );
+}
+
+if ( 'true' === $should_render_example_closure ) {
 	add_action(
 		'wp_enqueue_scripts',
 		function () {
-			echo <<<HTML
-			<div style="border:1px outset gray; padding: 1em;background:#ccc;position:fixed;bottom:0;left:0;z-index:99; width: 100%;">
-				This is a a sample anonymous function.
-		</div>
-		HTML;
+			$output  = '<div style="border:1px outset gray; padding: 1em;background:#ccc;position:fixed;bottom:0;left:0;z-index:99; width: 100%;">';
+			$output .= 'This is a a sample anonymous function.';
+			$output .= '</div>';
 		},
 		0,
 		10
@@ -96,14 +102,12 @@ function get_object_method_information( $callback ) {
 		return "\n\t" . $e->getMessage() . "\n";
 	}
 
-	$output = <<<METHOD_INFO
-		\n\tObject Method\n
-		\tClass: {$reflection->class}
-		\tMethod: {$reflection->name}
-		\tFilename: {$reflection->getFileName()}
-		\tStart line: {$reflection->getStartLine()}
-		\tEnd line: {$reflection->getEndLine()}
-	METHOD_INFO;
+	$output  = "\n\tObject Method\n";
+	$output .= "\tClass: {$reflection->class}\n";
+	$output .= "\tMethod: {$reflection->name}\n";
+	$output .= "\tFilename: {$reflection->getFileName()}\n";
+	$output .= "\tStart line: {$reflection->getStartLine()}\n";
+	$output .= "\tEnd line: {$reflection->getEndLine()}\n";
 
 	return $output;
 }
@@ -126,14 +130,12 @@ function get_static_method_information( $callback ) {
 		return "\n\t" . $e->getMessage() . "\n";
 	}
 
-	$output = <<<METHOD_INFO
-		\n\tStatic Method\n
-		\tClass: {$reflection->class}
-		\tMethod: {$reflection->name}
-		\tFilename: {$reflection->getFileName()}
-		\tStart line: {$reflection->getStartLine()}
-		\tEnd line: {$reflection->getEndLine()}
-	METHOD_INFO;
+	$output  = "\n\tStatic Method\n";
+	$output .= "\tClass: {$reflection->class}\n";
+	$output .= "\tMethod: {$reflection->name}\n";
+	$output .= "\tFilename: {$reflection->getFileName()}\n";
+	$output .= "\tStart line: {$reflection->getStartLine()}\n";
+	$output .= "\tEnd line: {$reflection->getEndLine()}\n";
 
 	return $output;
 }
@@ -148,12 +150,10 @@ function get_static_method_information( $callback ) {
 function get_anonymous_function_information( $callback ) {
 	$reflection = new ReflectionFunction( $callback['function'] );
 
-	$output = <<<FUNCTION_INFO
-		\n\tAnonymous Function\n
-		\tFilename: {$reflection->getFileName()}
-		\tStart line: {$reflection->getStartLine()}
-		\tEnd line: {$reflection->getEndLine()}
-	FUNCTION_INFO;
+	$output  = "\n\tAnonymous Function\n";
+	$output .= "\tFilename: {$reflection->getFileName()}\n";
+	$output .= "\tStart line: {$reflection->getStartLine()}\n";
+	$output .= "\tEnd line: {$reflection->getEndLine()}\n";
 
 	return $output;
 }
@@ -172,12 +172,10 @@ function get_function_information( $callback ) {
 		return "\n\t" . $e->getMessage() . "\n";
 	}
 
-	$output = <<<FUNCTION_INFO
-		\n\tFunction\n
-		\tFilename: {$reflection->getFileName()}
-		\tStart line: {$reflection->getStartLine()}
-		\tEnd line: {$reflection->getEndLine()}
-	FUNCTION_INFO;
+	$output  = "\n\tFunction\n";
+	$output .= "\tFilename: {$reflection->getFileName()}\n";
+	$output .= "\tStart line: {$reflection->getStartLine()}\n";
+	$output .= "\tEnd line: {$reflection->getEndLine()}\n";
 
 	return $output;
 }
