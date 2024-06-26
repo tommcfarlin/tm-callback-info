@@ -126,14 +126,12 @@ function get_static_method_information( $callback ) {
 		return "\n\t" . $e->getMessage() . "\n";
 	}
 
-	$output = <<<METHOD_INFO
-		\n\tStatic Method\n
-		\tClass: {$reflection->class}
-		\tMethod: {$reflection->name}
-		\tFilename: {$reflection->getFileName()}
-		\tStart line: {$reflection->getStartLine()}
-		\tEnd line: {$reflection->getEndLine()}
-	METHOD_INFO;
+	$output  = "\n\tStatic Method\n";
+	$output .= "\tClass: {$reflection->class}\n";
+	$output .= "\tMethod: {$reflection->name}\n";
+	$output .= "\tFilename: {$reflection->getFileName()}\n";
+	$output .= "\tStart line: {$reflection->getStartLine()}\n";
+	$output .= "\tEnd line: {$reflection->getEndLine()}\n";
 
 	return $output;
 }
