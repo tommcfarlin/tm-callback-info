@@ -37,11 +37,9 @@ if ( 'true' === filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER
 	add_action(
 		'wp_enqueue_scripts',
 		function () {
-			echo <<<HTML
-			<div style="border:1px outset gray; padding: 1em;background:#ccc;position:fixed;bottom:0;left:0;z-index:99; width: 100%;">
-				This is a a sample anonymous function.
-		</div>
-		HTML;
+			$output  = '<div style="border:1px outset gray; padding: 1em;background:#ccc;position:fixed;bottom:0;left:0;z-index:99; width: 100%;">';
+			$output .= 'This is a a sample anonymous function.';
+			$output .= '</div>';
 		},
 		0,
 		10
