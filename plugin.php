@@ -10,6 +10,7 @@
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Version: 1.0.0
+ * Text Domain: tm-callback-info
  *
  * @package TmCallbackInfo
  * @version 1.0.0
@@ -27,11 +28,6 @@ use ReflectionException;
 
 defined( 'WPINC' ) || die;
 
-// Pass `show-callback-info=true` to the query string to render callback information.
-if ( 'true' !== filter_input( INPUT_GET, 'show-callback-info', FILTER_SANITIZE_STRING ) ) {
-	return;
-}
-
 // Pass `use-sample-anonymous-function=true` to the query string to render a sample closure.
 if ( 'true' === filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_SANITIZE_STRING ) ) {
 	add_action(
@@ -45,6 +41,26 @@ if ( 'true' === filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER
 		},
 		0,
 		10
+	);
+}
+
+add_action( 'admin_bar_menu', __NAMESPACE__ . '\\add_admin_bar_menu', 999 );
+
+/**
+ * Adds a menu item to the WordPress admin bar.
+ *
+ * This function is responsible for adding a menu item to the WordPress admin bar.
+ * It takes the `$wp_admin_bar` object as a parameter and modifies it to include the new menu item.
+ *
+ * @param WP_Admin_Bar $wp_admin_bar The WordPress admin bar object.
+ */
+function add_admin_bar_menu( $wp_admin_bar ) {
+	$wp_admin_bar->add_menu(
+		array(
+			'id'    => 'callback-info',
+			'title' => __( 'Callback Info', 'tm-callback-info' ),
+			'href'  => add_query_arg( 'show-callback-info', 'true' ),
+		)
 	);
 }
 
