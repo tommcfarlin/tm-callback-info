@@ -27,30 +27,80 @@ use ReflectionException;
 
 defined( 'WPINC' ) || die;
 
-/*
-// Pass `show-callback-info=true` to the query string to render callback information.
-if ( 'true' !== filter_input( INPUT_GET, 'show-callback-info', FILTER_SANITIZE_STRING ) ) {
-	return;
+/**
+ * Determines if the example closure should be rendered.
+ *
+ * @param string $key The key to check.
+ * @param int    $filter The filter to apply (optional). Defaults to FILTER_UNSAFE_RAW.
+ * @return string The rendered output.
+ */
+function should_render_example_closure( string $key, int $filter = FILTER_UNSAFE_RAW ) {
+	$user_input = filter_input( INPUT_GET, $key, $filter );
+	if ( isset( $user_input ) ) {
+		return strtolower( htmlspecialchars( $user_input, ENT_QUOTES ) );
+	} else {
+		return '';
+	}
 }
-*/
 
-// Pass `use-sample-anonymous-function=true` to the query string to render a sample closure.
-$should_render_example_closure = '';
-$user_input                    = filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_UNSAFE_RAW );
-if ( isset( $user_input ) ) {
-	$should_render_example_closure = strtolower( htmlspecialchars( $user_input ) );
+/**
+ * Determines whether the callback info should be shown.
+ *
+ * This function checks if the callback info should be displayed or not.
+ *
+ * @return bool Whether the callback info should be shown.
+ */
+function should_show_callback_info() {
+	$query_string_value = filter_input( INPUT_GET, 'show-callback-info', FILTER_UNSAFE_RAW );
+	return (
+		isset( $query_string_value ) &&
+		'true' === strtolower( $query_string_value )
+	);
 }
 
-if ( 'true' === $should_render_example_closure ) {
+/**
+ * This code checks if the result of the function `should_render_example_closure`
+ * is equal to the string 'true'.
+ *
+ * If it is, it adds an action to enqueue scripts on the 'wp_enqueue_scripts'
+ * hook.
+ *
+ * The action is an anonymous function that generates HTML output for a fixed
+ * positioned div. The div contains a sample message.
+ */
+if ( 'true' === should_render_example_closure( 'use-sample-anonymous-function' ) ) {
 	add_action(
 		'wp_enqueue_scripts',
 		function () {
 			$output  = '<div style="border:1px outset gray; padding: 1em;background:#ccc;position:fixed;bottom:0;left:0;z-index:99; width: 100%;">';
-			$output .= 'This is a a sample anonymous function.';
+			$output .= 'This is a sample anonymous function.';
 			$output .= '</div>';
 		},
 		0,
 		10
+	);
+}
+
+add_action( 'admin_bar_menu', __NAMESPACE__ . '\\add_admin_bar_menu', 99 );
+/**
+ * Adds a menu item to the WordPress admin bar.
+ *
+ * This function is responsible for adding a menu item to the WordPress admin bar.
+ * It takes the `$wp_admin_bar` object as a parameter and modifies it to include the new menu item.
+ *
+ * @param WP_Admin_Bar $wp_admin_bar The WordPress admin bar object.
+ */
+function add_admin_bar_menu( $wp_admin_bar ) {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$wp_admin_bar->add_menu(
+		array(
+			'id'    => 'callback-info',
+			'title' => __( 'Callback Info', 'tm-callback-info' ),
+			'href'  => add_query_arg( 'show-callback-info', 'true' ),
+		)
 	);
 }
 
@@ -61,6 +111,10 @@ add_action( 'wp_head', __NAMESPACE__ . '\\list_registered_functions', 1000 );
  * @return void
  */
 function list_registered_functions() {
+	if ( ! should_show_callback_info() ) {
+		return;
+	}
+
 	global $wp_filter;
 
 	foreach ( $wp_filter as $hook_name => $hook_object ) {
