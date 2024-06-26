@@ -27,13 +27,21 @@ use ReflectionException;
 
 defined( 'WPINC' ) || die;
 
+/*
 // Pass `show-callback-info=true` to the query string to render callback information.
 if ( 'true' !== filter_input( INPUT_GET, 'show-callback-info', FILTER_SANITIZE_STRING ) ) {
 	return;
 }
+*/
 
 // Pass `use-sample-anonymous-function=true` to the query string to render a sample closure.
-if ( 'true' === filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_SANITIZE_STRING ) ) {
+$should_render_example_closure = '';
+$user_input                    = filter_input( INPUT_GET, 'use-sample-anonymous-function', FILTER_UNSAFE_RAW );
+if ( isset( $user_input ) ) {
+	$should_render_example_closure = strtolower( htmlspecialchars( $user_input ) );
+}
+
+if ( 'true' === $should_render_example_closure ) {
 	add_action(
 		'wp_enqueue_scripts',
 		function () {
