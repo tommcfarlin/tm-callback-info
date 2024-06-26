@@ -166,12 +166,10 @@ function get_function_information( $callback ) {
 		return "\n\t" . $e->getMessage() . "\n";
 	}
 
-	$output = <<<FUNCTION_INFO
-		\n\tFunction\n
-		\tFilename: {$reflection->getFileName()}
-		\tStart line: {$reflection->getStartLine()}
-		\tEnd line: {$reflection->getEndLine()}
-	FUNCTION_INFO;
+	$output  = "\n\tFunction\n";
+	$output .= "\tFilename: {$reflection->getFileName()}\n";
+	$output .= "\tStart line: {$reflection->getStartLine()}\n";
+	$output .= "\tEnd line: {$reflection->getEndLine()}\n";
 
 	return $output;
 }
