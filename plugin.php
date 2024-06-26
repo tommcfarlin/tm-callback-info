@@ -148,12 +148,10 @@ function get_static_method_information( $callback ) {
 function get_anonymous_function_information( $callback ) {
 	$reflection = new ReflectionFunction( $callback['function'] );
 
-	$output = <<<FUNCTION_INFO
-		\n\tAnonymous Function\n
-		\tFilename: {$reflection->getFileName()}
-		\tStart line: {$reflection->getStartLine()}
-		\tEnd line: {$reflection->getEndLine()}
-	FUNCTION_INFO;
+	$output  = "\n\tAnonymous Function\n";
+	$output .= "\tFilename: {$reflection->getFileName()}\n";
+	$output .= "\tStart line: {$reflection->getStartLine()}\n";
+	$output .= "\tEnd line: {$reflection->getEndLine()}\n";
 
 	return $output;
 }
